@@ -17,7 +17,6 @@
       args:
         creates: /usr/local/bin/brew
 
-
     - name: Tap Homebrew Bundle
       homebrew_tap: tap=Homebrew/bundle
 
@@ -56,7 +55,11 @@
     - name: Make vim use MacVim
       file: src=/Applications/MacVim.app/Contents/bin/mvim dest=/usr/local/bin/vim state=link
 
-    
+    - name: oh my zsh
+      shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+      args:
+        creates: ~/.oh-my-zsh
+
     - name: Update OS X defaults
       osx_defaults:
         domain: "{{ item.domain | default(omit) }}"

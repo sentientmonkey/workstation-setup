@@ -1,0 +1,7 @@
+- hosts: all
+  tasks:
+    - import_tasks: sudo.yml
+    - name: Install Dr Racket
+      homebrew_cask: name={{ item }}
+      with_items:
+        - racket
