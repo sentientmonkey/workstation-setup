@@ -1,0 +1,77 @@
+- hosts: all
+  # No-op task to set ansible_env (see https://github.com/ansible/ansible/issues/14655)
+
+- hosts: all
+  vars:
+    repos:
+      - vim-config
+
+  environment:
+    PATH: /usr/local/bin:{{ ansible_env.PATH }}
+
+  tasks:
+    - import_tasks: sudo.yml
+
+    - name: Install Homebrew
+      shell: /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" < /dev/null
+      args:
+        creates: /usr/local/bin/brew
+
+
+    - name: Tap Homebrew Bundle
+      homebrew_tap: tap=Homebrew/bundle
+
+    - import_tasks: sudo.yml
+    - file:
+        path: /usr/local/Caskroom
+        state: directory
+        owner: "{{ ansible_user_id }}"
+        group: staff
+      become: yes
+
+    - name: Install from the Brewfile
+      command: brew bundle
+      args:
+        chdir: ~/workspace/workstation-setup
+      ignore_errors: yes
+
+    - name: Update repos
+      git:
+        repo: https://github.com/sentientmonkey/{{ item }}.git
+        dest: ~/workspace/{{ item }}
+      ignore_errors: yes # Ignore dirty repos
+      with_items: "{{ repos }}"
+
+    - name: Symlink child repositories
+      file: src=~/workspace/{{ item.key }} dest={{ item.value }} state=link
+      with_dict:
+        vim-config: ~/.vim
+        vim-config/vimrc: ~/.vimrc
+
+    - name: install vim
+      command: bin/install
+      args:
+        chdir: ~/workspace/vim-config
+
+    - name: Make vim use MacVim
+      file: src=/Applications/MacVim.app/Contents/bin/mvim dest=/usr/local/bin/vim state=link
+
+    
+    - name: Update OS X defaults
+      osx_defaults:
+        domain: "{{ item.domain | default(omit) }}"
+        key: "{{ item.key }}"
+        type: "{{ item.type }}"
+        value: "{{ item.value }}"
+      with_items:
+       - # don't use natural scrolling
+          domain: NSGlobalDomain
+          key: com.apple.swipescrolldirection
+          type: bool
+          value: false
+
+    - name: Restart the Dock
+      command: killall Dock
+      ignore_errors: yes
+
+- import_playbook: ssh.yml

@@ -1,0 +1,27 @@
+- hosts: all # No-op play to get ansible_env
+
+- hosts: all
+
+  environment:
+    PATH: "/usr/local/bin:/Users/{{ ansible_env.USER }}/.rbenv/shims:{{ ansible_env.PATH }}"
+
+  vars:
+    current_version: 2.6.5
+
+  tasks:
+
+    - name: Install rbenv
+      homebrew: name=rbenv
+
+    - name: Install Rubies
+      command: rbenv install {{ item }}
+      args:
+        creates: ~/.rbenv/versions/{{ item }}
+      with_items:
+        - "{{ current_version }}"
+
+    - name: Use Ruby {{ current_version }}
+      shell: rbenv global {{ current_version }} && rbenv rehash
+
+    - name: Install Ruby gems
+      command: gem install bundler

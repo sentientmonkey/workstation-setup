@@ -1,0 +1,4 @@
+- hosts: all
+- import_playbook: main.yml
+- import_playbook: ruby.yml
+- import_playbook: java.yml
