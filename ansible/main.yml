@@ -67,12 +67,28 @@
         type: "{{ item.type }}"
         value: "{{ item.value }}"
       with_items:
-       - # don't use natural scrolling
+        - # Autohide the Dock
+          domain: com.apple.dock
+          key: autohide
+          type: bool
+          value: true
+        - # Put the Dock on the left
+          domain: com.apple.dock
+          key: orientation
+          type: string
+          value: left
+        - # don't use natural scrolling
           domain: NSGlobalDomain
           key: com.apple.swipescrolldirection
           type: bool
           value: false
 
+    - name: Install dockutil
+      homebrew: name=dockutil
+    - name: Remove all icons from the Dock
+      command: dockutil --remove all
+    - name: Add /Applications/ to the Dock
+      command: dockutil --add /Applications/ --sort name
     - name: Restart the Dock
       command: killall Dock
       ignore_errors: yes
