@@ -60,6 +60,13 @@
       args:
         creates: ~/.oh-my-zsh
 
+    - name: Symlink config files
+      file: src=~/workspace/workstation-setup/dotfiles/{{ item }} dest=~/{{ item }} state=link
+      with_items:
+        - .git_templates
+        - .gitconfig
+        - .gitignore_global
+
     - name: Update OS X defaults
       osx_defaults:
         domain: "{{ item.domain | default(omit) }}"
