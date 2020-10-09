@@ -2,3 +2,4 @@
 - import_playbook: main.yml
 - import_playbook: ruby.yml
 - import_playbook: java.yml
+- import_playbook: javascript.yml

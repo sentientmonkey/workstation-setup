@@ -1,10 +1,9 @@
 - hosts: all
   tasks:
-
     - import_tasks: sudo.yml
 
-    - name: Install Java and IntelliJ
-      homebrew_cask: name={{ item }}
-      with_items:
-        - intellij-idea-ce
-        - java
+    - name: Install Java
+      homebrew: name=java
+
+    - name: Install IntelliJ
+      homebrew_cask: name=intellij-idea-ce

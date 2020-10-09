@@ -6,7 +6,7 @@
     PATH: "/usr/local/bin:/Users/{{ ansible_env.USER }}/.rbenv/shims:{{ ansible_env.PATH }}"
 
   vars:
-    current_version: 2.6.5
+    current_version: 2.7.2
 
   tasks:
 
