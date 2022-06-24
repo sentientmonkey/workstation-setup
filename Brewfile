@@ -10,6 +10,7 @@ brew 'tree'
 brew 'watch'
 brew 'cowsay'
 brew 'cmake'
+brew 'the_silver_searcher'
 
 cask 'firefox'
 cask 'flycut'

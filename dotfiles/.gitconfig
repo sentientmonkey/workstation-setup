@@ -20,6 +20,9 @@
 	dc = duet-commit
 	s = status --branch --short
 	push-f = push --force-with-lease
+  up = push -u
+  down = pull
+  deploy = push heroku staging:master
 [core]
 	pager = less -FXRS -x2
 	excludesfile = ~/.gitignore_global
@@ -49,3 +52,7 @@
 	email = swindsor@gmail.com
 [init]
 	templatedir = ~/.git_templates
+[pull]
+	rebase = true
+[merge]
+  conflictStyle = diff3
