@@ -4,7 +4,8 @@
 	co = checkout
 	ci = commit
 	br = branch
-	sta = stash
+  down = pull --rebase
+  up = push --set-upstream
 	llog = log --date=local
 	flog = log --pretty=fuller --decorate
 	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
