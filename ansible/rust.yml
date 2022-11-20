@@ -1,0 +1,10 @@
+- hosts: all
+  # No-op task to set ansible_env (see https://github.com/ansible/ansible/issues/14655)
+
+- hosts: all
+  tasks:
+    - name: Install rustup
+      shell: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+      args:
+        creates: ~/.cargo/bin/rustup
+
