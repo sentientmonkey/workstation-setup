@@ -1,0 +1,4 @@
+alias vim=/Applications/MacVim.app/Contents/bin/vim
+alias hl='heroku local'
+alias yd='yarn dev'
+alias ls='ls --color'
